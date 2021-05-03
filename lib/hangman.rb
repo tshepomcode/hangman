@@ -43,6 +43,38 @@ def player_input
 
 end
 
+def display_letters(word_arr, found_chars, wrong_chars, locations)
+  found = []
+  puts
+  puts '------ In the display_letters method ------'
+  puts "word_arr = #{word_arr} | found_chars = #{found_chars}"
+  puts "wrong_chars = #{wrong_chars} | locations = #{locations}"
+  puts
+
+  found_chars.each do |c|
+    found <<  word_arr.each_index.select { |index| word_arr[index] == c}
+  end
+
+  puts "found = #{found}"
+  flat_found = found.flatten.sort
+  puts "flat_found = #{flat_found}"
+
+  word_arr.each_with_index do | letter, index |
+    if flat_found.include?(index)
+      print letter
+    else
+      print '_'
+    end
+  end
+    # puts word_arr.each_index.select { |index| word_arr[index] == guess}
+  # found.each do |pos|
+
+  # end
+  puts
+  puts '------ end of display_letters method ------'
+end
+
+
 instructions
 
 word = get_word.downcase
@@ -72,7 +104,6 @@ while turn <= 8
   guess_letters << guess
 
   word_arr = word.chars
-
   puts "word_arr  = #{word_arr}"
   
   # puts guess
@@ -82,16 +113,20 @@ while turn <= 8
   if word_arr.any?(guess)
     puts "We found something"
     found_chars << guess
-    locations = word_arr.each_index.select { |index| word_arr[index] == guess}
+    locations << word_arr.each_index.select { |index| word_arr[index] == guess}
     puts "locations = #{locations}"
+    # disply correct letters
   else
     puts "Wrong guess"
-
+    wrong_chars << guess
   end
+
+  display_letters(word_arr, found_chars, wrong_chars, locations)
+
   find_correct = word_arr.find_all { |i| i == guess}
 
   puts "find_correct = #{find_correct}"
-  puts "found_chars = #{found_chars}"
+  # puts "found_chars = #{found_chars}"
   
   # and their position in the word, e.g. _ r o g r a _ _ i n g) 
   # and which incorrect letters have already been chosen.
